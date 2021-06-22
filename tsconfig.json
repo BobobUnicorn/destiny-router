@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["dom", "DOM.Iterable", "esnext"],
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "downlevelIteration": true,
+
+    "useDefineForClassFields": true,
+    "strict": true,
+    "moduleResolution": "Node",
+
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "importsNotUsedAsValues": "error",
+
+    "baseUrl": "./",
+    "esModuleInterop": true,
+
+    "forceConsistentCasingInFileNames": true
+  }
+}
