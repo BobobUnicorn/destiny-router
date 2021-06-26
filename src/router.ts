@@ -49,7 +49,7 @@ export class RouterComponent extends Component {
     this.#errorTemplate.value = errorTemplate;
   }
 
-  #matchRoute(path: string, routes: Routes = this.routes): Route | null {
+  #matchRoute(path: string, routes: Routes = this.#routes.value): Route | null {
     path = normalizePath(path);
     for (const route of routes) {
       const routePath = route.path;
@@ -58,7 +58,10 @@ export class RouterComponent extends Component {
       }
       if (path.startsWith(routePath)) {
         if (route.children?.length) {
-          return this.#matchRoute(path.slice(route.path.length));
+          return this.#matchRoute(
+            path.slice(route.path.length),
+            route.children
+          );
         } else {
           return route;
         }
