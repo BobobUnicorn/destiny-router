@@ -1,2 +1,2 @@
-export * from "./types";
-export { RouterComponent as default } from "./router";
+export * from "./types.js";
+export { RouterComponent as default } from "./router.js";

@@ -1,14 +1,15 @@
-import type { Component } from "destiny";
+import type { TemplateResult } from "destiny";
 
-export type ComponentResolver = () =>
-  | Component
-  | Promise<{ default: Component }>;
+// TODO: try and make this generic
+export interface RouteParams {
+  [key: string]: string;
+}
 
 export interface Route {
   path: string;
   children?: Routes;
-  component?: Component | ComponentResolver;
+  template?: (params: RouteParams) => TemplateResult;
   redirectTo?: string;
 }
 
-export type Routes = Route[];
+export type Routes = readonly Route[];
