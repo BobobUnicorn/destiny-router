@@ -19,8 +19,8 @@ window.addEventListener("popstate", () => {
 });
 
 export class RouterComponent extends Component {
-  #errorTemplate = new ReactiveValue(this.errorTemplate ?? xml`404`);
-  #routes = new ReactiveValue<Routes>(this.routes ?? []);
+  #errorTemplate = new ReactiveValue(xml`404`);
+  #routes = new ReactiveValue<Routes>([]);
   #template = computed(() => {
     let path = currentPath.value;
 
