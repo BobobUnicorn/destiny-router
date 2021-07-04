@@ -6,6 +6,7 @@ import {
   TemplateResult,
   xml,
 } from "destiny";
+import { NAVIGATE, NavigateEventDetail } from "./events";
 import type { Route, Routes } from "./types";
 
 function getRoutePath(url: string) {
@@ -14,9 +15,44 @@ function getRoutePath(url: string) {
 
 const currentPath = reactive(getRoutePath(window.location.href));
 
-window.addEventListener("popstate", () => {
-  currentPath.value = window.location.href;
+window.addEventListener("popstate", (e) => {
+  const state = e.state;
+  setRoute(state || window.location.href);
 });
+
+function setRoute(path: string) {
+  currentPath.value = getRoutePath(path);
+}
+
+function isSameDomain(href: string) {
+  return (
+    new URL(href, window.location.href).hostname ===
+    new URL(window.location.href).hostname
+  );
+}
+
+function pushState(path: string) {
+  const url = new URL(path, window.location.href).toString();
+  history.pushState(url, "", url);
+}
+
+function replaceState(path: string) {
+  const url = new URL(path, window.location.href).toString();
+  history.replaceState(url, "", url);
+}
+
+export interface RouterComponent {
+  addEventListener(
+    type: typeof NAVIGATE,
+    listener: (this: this, ev: CustomEvent<NavigateEventDetail>) => void,
+    options?: boolean | AddEventListenerOptions
+  ): void;
+  addEventListener(
+    type: string,
+    listener: EventListenerOrEventListenerObject,
+    options?: boolean | AddEventListenerOptions
+  ): void;
+}
 
 export class RouterComponent extends Component {
   #errorTemplate = new ReactiveValue(xml`404`);
@@ -33,6 +69,7 @@ export class RouterComponent extends Component {
         return this.#errorTemplate.value;
       } else if (route.redirectTo) {
         path = route.redirectTo;
+        replaceState(path);
       } else {
         return this.#getRouteTemplate(route);
       }
@@ -47,6 +84,46 @@ export class RouterComponent extends Component {
 
   set errorTemplate(errorTemplate: TemplateResult) {
     this.#errorTemplate.value = errorTemplate;
+  }
+
+  constructor() {
+    super();
+
+    // Handle explicit NAVIGATE events, triggered from JS.
+    this.addEventListener(NAVIGATE, (e) => {
+      const go = e.detail.go;
+      let path: string;
+      if (Array.isArray(go)) {
+        path = go.join("/");
+      } else {
+        path = go;
+      }
+
+      pushState(path);
+      currentPath.value = path;
+
+      e.stopPropagation();
+    });
+
+    // Trap anchor link clicks, so that they are actually handled through the router.
+    this.addEventListener("click", (e) => {
+      const target = e.composedPath()[0];
+      if (!(target instanceof HTMLAnchorElement)) {
+        return;
+      }
+
+      if (!isSameDomain(target.href)) {
+        return;
+      }
+
+      const url = new URL(target.href, window.location.href);
+      const extractedPath = url.pathname;
+      pushState(extractedPath);
+      currentPath.value = extractedPath;
+
+      e.preventDefault();
+      e.stopPropagation();
+    });
   }
 
   #matchRoute(path: string, routes: Routes = this.#routes.value): Route | null {
