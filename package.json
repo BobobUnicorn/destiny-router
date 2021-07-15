@@ -1,0 +1,32 @@
+{
+  "name": "destiny-router",
+  "version": "0.0.1",
+  "description": "A simple location-based router for https://github.com/0kku/destiny",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "browser": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BobobUnicorn/destiny-router.git"
+  },
+  "author": "https://github.com/BobobUnicorn",
+  "license": "OSL-3.0",
+  "bugs": {
+    "url": "https://github.com/BobobUnicorn/destiny-router/issues"
+  },
+  "homepage": "https://github.com/BobobUnicorn/destiny-router#readme",
+  "peerDependencies": {
+    "destiny": ">= 0.6.0"
+  },
+  "devDependencies": {
+    "destiny": "file:../destiny",
+    "prettier": "^2.3.1",
+    "typescript": "^4.3.4"
+  }
+}
