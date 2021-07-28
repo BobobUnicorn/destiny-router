@@ -2,6 +2,10 @@
 
 This is a simple router library for https://github.com/0kku/destiny
 
+## Disclaimer
+
+This is not an officially supported Google product.
+
 ## Source Code Headers
 
 Every file containing source code must include copyright and license
