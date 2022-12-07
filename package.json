@@ -16,7 +16,7 @@
     "url": "git+https://github.com/BobobUnicorn/destiny-router.git"
   },
   "author": "https://github.com/BobobUnicorn",
-  "license": "OSL-3.0",
+  "license": "Apache 2.0",
   "bugs": {
     "url": "https://github.com/BobobUnicorn/destiny-router/issues"
   },
