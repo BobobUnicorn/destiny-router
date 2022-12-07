@@ -23,5 +23,6 @@
     "esModuleInterop": true,
 
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "include": [ "**/*.ts", "node_modules/destiny" ],
 }
